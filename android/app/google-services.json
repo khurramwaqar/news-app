@@ -1,0 +1,93 @@
+{
+  "project_info": {
+    "project_number": "565168677109",
+    "firebase_url": "https://ary-news-pro.firebaseio.com",
+    "project_id": "ary-news-pro",
+    "storage_bucket": "ary-news-pro.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:565168677109:android:d4fbb7a85b9e23d3",
+        "android_client_info": {
+          "package_name": "com.aryservices.arynews.en"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "565168677109-h3hilb31qioj4uarfe7mlga9gs544d0a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aryservices.arynews.en",
+            "certificate_hash": "082e9bdb1a014d2e75469a098b7df04e3fbef344"
+          }
+        },
+        {
+          "client_id": "565168677109-6v2n88ne7ntp1strb8led6firadi1id9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCW95Ib0ea3ug3CWTxSgv3AbXkmTFQToRA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "565168677109-6v2n88ne7ntp1strb8led6firadi1id9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "565168677109-d0aigdlsuk1chqie5guoqseo3vl0kqk8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.aryservices.arynews.pro",
+                "app_store_id": "1164931041"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:565168677109:android:8edd25b47c4b23247f25bc",
+        "android_client_info": {
+          "package_name": "com.mrblab.newsfreak"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "565168677109-6v2n88ne7ntp1strb8led6firadi1id9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCW95Ib0ea3ug3CWTxSgv3AbXkmTFQToRA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "565168677109-6v2n88ne7ntp1strb8led6firadi1id9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "565168677109-d0aigdlsuk1chqie5guoqseo3vl0kqk8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.aryservices.arynews.pro",
+                "app_store_id": "1164931041"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
