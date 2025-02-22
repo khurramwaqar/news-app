@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wordpress_app/blocs/comment_bloc.dart';
 import 'package:wordpress_app/blocs/config_bloc.dart';
+import 'package:wordpress_app/blocs/sidemenu_bloc.dart';
 import 'blocs/ads_bloc.dart';
 import 'blocs/category_bloc.dart';
 import 'blocs/featured_bloc.dart';
@@ -35,6 +36,8 @@ class MyApp extends StatelessWidget {
                     create: (context) => SettingsBloc()),
                 ChangeNotifierProvider<CategoryBloc>(
                     create: (context) => CategoryBloc()),
+                ChangeNotifierProvider<SidemennuBloc>(
+                    create: (context) => SidemennuBloc()),
                 ChangeNotifierProvider<FeaturedBloc>(
                     create: (context) => FeaturedBloc()),
                 ChangeNotifierProvider<LatestArticlesBloc>(

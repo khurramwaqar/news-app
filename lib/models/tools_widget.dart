@@ -4,34 +4,35 @@
 
 import 'dart:convert';
 
-List<ToolsWidger> toolsWidgerFromJson(String str) => List<ToolsWidger>.from(
-    json.decode(str).map((x) => ToolsWidger.fromJson(x)));
+List<ToolsWidget> toolsWidgetFromJson(String str) => List<ToolsWidget>.from(
+    json.decode(str).map((x) => ToolsWidget.fromJson(x)));
 
-String toolsWidgerToJson(List<ToolsWidger> data) =>
+String toolsWidgetToJson(List<ToolsWidget> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class ToolsWidger {
+class ToolsWidget {
   int? position;
   String? title;
   String? tag;
   String? action;
   String? icon;
+  String? iconF;
 
-  ToolsWidger({
-    this.position,
-    this.title,
-    this.tag,
-    this.action,
-    this.icon,
-  });
+  ToolsWidget(
+      {this.position,
+      this.title,
+      this.tag,
+      this.action,
+      this.icon,
+      this.iconF});
 
-  factory ToolsWidger.fromJson(Map<String, dynamic> json) => ToolsWidger(
-        position: json["position"],
-        title: json["title"],
-        tag: json["tag"],
-        action: json["action"],
-        icon: json["icon"],
-      );
+  factory ToolsWidget.fromJson(Map<String, dynamic> json) => ToolsWidget(
+      position: json["position"],
+      title: json["title"],
+      tag: json["tag"],
+      action: json["action"],
+      icon: json["icon"],
+      iconF: json["iconF"]);
 
   Map<String, dynamic> toJson() => {
         "position": position,
@@ -39,5 +40,6 @@ class ToolsWidger {
         "tag": tag,
         "action": action,
         "icon": icon,
+        "iconF": iconF,
       };
 }

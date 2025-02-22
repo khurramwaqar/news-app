@@ -8,5 +8,5 @@ class WpConfig {
 
   // FEATURE CATEGORY IMGAE -  IF YOU HAVEN'T DEFINE A COVER IMAGE FOR A CATEGORY IN THE LIST BELOW
   static const String defaultCategoryThumbnail =
-      "https://images.unsplash.com/photo-1494253109108-2e30c049369b?ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8cmFuZG9tfGVufDB8MHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60";
+      "https://demo.arynews.tv/wp-content/uploads/2024/10/ph_bg.png";
 }

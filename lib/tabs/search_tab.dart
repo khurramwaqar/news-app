@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:wordpress_app/blocs/category_bloc.dart';
+import 'package:wordpress_app/blocs/sidemenu_bloc.dart';
+import 'package:wordpress_app/cards/selective_category_card.dart';
 import 'package:wordpress_app/models/category.dart';
+import 'package:wordpress_app/models/sidemenu.dart';
 import 'package:wordpress_app/pages/search.dart';
 import 'package:wordpress_app/utils/loading_card.dart';
 import 'package:wordpress_app/utils/next_screen.dart';
@@ -19,20 +22,62 @@ class SearchTab extends StatefulWidget {
   State<SearchTab> createState() => _SearchTabState();
 }
 
-class _SearchTabState extends State<SearchTab> with AutomaticKeepAliveClientMixin {
+class _SearchTabState extends State<SearchTab>
+    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
 
     final allCategories = context.watch<CategoryBloc>().categoryData;
-    final List<Category> mainCategories = allCategories.where((element) => element.parent == 0).toList();
+    final selectiveCategeories =
+        context.watch<SidemennuBloc>().categoryData.sidebar;
+
+    final List<Category> mainCategories =
+        allCategories.where((element) => element.parent == 0).toList();
+
+    final List<Sidebar>? mainSelectiveCategeories = selectiveCategeories;
+
+    List<String> excludedCategories = [
+      "Featured",
+      "Ideas2014",
+      "Senate",
+      "Health=Wealth",
+      "Photogallery",
+      "Point of View",
+      "Off the Record",
+      "Letters",
+      "Budget 2015 - 16",
+      "Ayyan Ali",
+      "Media Mirror",
+      "Judicial Commission",
+      "Budget",
+      "Social Diary",
+      "Roman News",
+      "Editor's Choice",
+      "Howzat!",
+      "Geo/ISI Controversy",
+      "FIFA 2014",
+      "personality",
+      "Long March",
+      "Khyber PakhtoonKhuwa",
+      "ARY Special",
+      "Balochistan",
+      "Terrorism",
+      "Latest Blogs",
+      "Punjab",
+      "Karachi",
+      "Sindh",
+      "Editor Picks"
+    ];
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: RefreshIndicator(
         backgroundColor: Theme.of(context).primaryColor,
         color: Colors.white,
-        onRefresh: () async => await context.read<CategoryBloc>().fetchData(context.read<ConfigBloc>().configs!.blockedCategories),
+        onRefresh: () async => await context
+            .read<CategoryBloc>()
+            .fetchData(context.read<ConfigBloc>().configs!.blockedCategories),
         child: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
@@ -62,10 +107,13 @@ class _SearchTabState extends State<SearchTab> with AutomaticKeepAliveClientMixi
                         child: Container(
                           padding: const EdgeInsets.only(left: 20, right: 20),
                           alignment: Alignment.center,
-                          margin: const EdgeInsets.only(left: 20, right: 20, bottom: 30, top: 20),
+                          margin: const EdgeInsets.only(
+                              left: 20, right: 20, bottom: 30, top: 20),
                           height: 50,
                           width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(color: Colors.grey[200], borderRadius: BorderRadius.circular(5)),
+                          decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(5)),
                           child: Row(
                             children: [
                               Icon(
@@ -77,12 +125,16 @@ class _SearchTabState extends State<SearchTab> with AutomaticKeepAliveClientMixi
                               ),
                               Text(
                                 'search-for-contents',
-                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.grey[600]),
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.grey[600]),
                               ).tr(),
                             ],
                           ),
                         ),
-                        onTap: () => nextScreenPopupiOS(context, const SearchPage()),
+                        onTap: () =>
+                            nextScreenPopupiOS(context, const SearchPage()),
                       )
                     ],
                   ),
@@ -91,7 +143,8 @@ class _SearchTabState extends State<SearchTab> with AutomaticKeepAliveClientMixi
             ),
             SliverToBoxAdapter(
               child: SingleChildScrollView(
-                  padding: const EdgeInsets.only(left: 15, right: 15, top: 20, bottom: 20),
+                  padding: const EdgeInsets.only(
+                      left: 15, right: 15, top: 20, bottom: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -103,7 +156,8 @@ class _SearchTabState extends State<SearchTab> with AutomaticKeepAliveClientMixi
                           ),
                           const Text(
                             'categories',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w600),
                           ).tr(),
                         ],
                       ),
@@ -113,20 +167,24 @@ class _SearchTabState extends State<SearchTab> with AutomaticKeepAliveClientMixi
                       GridView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        padding: const EdgeInsets.only(top: 5, bottom: 20, left: 0, right: 0),
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2, crossAxisSpacing: 8, mainAxisSpacing: 8, childAspectRatio: 1.3),
-                        itemCount: mainCategories.isEmpty ? 10 : mainCategories.length,
+                        padding: const EdgeInsets.only(
+                            top: 5, bottom: 20, left: 0, right: 0),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 8,
+                                mainAxisSpacing: 8,
+                                childAspectRatio: 1.3),
+                        itemCount: mainSelectiveCategeories!.length,
                         itemBuilder: (BuildContext context, int index) {
-                          if (mainCategories.isEmpty) {
+                          if (mainSelectiveCategeories!.isEmpty) {
                             return const LoadingCard(
                               height: null,
                             );
                           }
-
-                          return CategoryCard(
-                            category: mainCategories[index],
-                            allCategories: allCategories,
+                          return SelectiveCategoryCard(
+                            category: mainSelectiveCategeories![index],
+                            allCategories: selectiveCategeories!,
                           );
                         },
                       ),

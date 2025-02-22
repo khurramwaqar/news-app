@@ -21,15 +21,18 @@ void nextScreeniOS(context, page) {
 }
 
 void nextScreenCloseOthers(context, page) {
-  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => page), (route) => false);
+  Navigator.pushAndRemoveUntil(
+      context, MaterialPageRoute(builder: (context) => page), (route) => false);
 }
 
 void nextScreenReplace(context, page) {
-  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => page));
+  Navigator.pushReplacement(
+      context, MaterialPageRoute(builder: (context) => page));
 }
 
 void nextScreenReplaceiOS(context, page) {
-  Navigator.pushReplacement(context, CupertinoModalPopupRoute(builder: (context) => page));
+  Navigator.pushReplacement(
+      context, CupertinoModalPopupRoute(builder: (context) => page));
 }
 
 void nextScreenPopup(context, page) {
@@ -46,47 +49,73 @@ void nextScreenPopupiOS(context, page) {
   );
 }
 
+void nextScreenPopupSinglePlaylist(context, page) {
+  Navigator.push(
+    context,
+    CupertinoPageRoute(fullscreenDialog: true, builder: (context) => page),
+  );
+}
+
+void nextScreenPopupSingleProgram(context, page) {
+  Navigator.push(
+    context,
+    CupertinoPageRoute(fullscreenDialog: true, builder: (context) => page),
+  );
+}
+
+void nextScreenPopupCustomiOS(context, page) {
+  Navigator.push(
+    context,
+    CupertinoPageRoute(fullscreenDialog: true, builder: (context) => page),
+  );
+}
+
 void nextScreenReplaceAnimation(context, page) {
-    Navigator.of(context).pushReplacement(PageRouteBuilder(
-      pageBuilder: (
-        BuildContext context,
-        Animation<double> animation,
-        Animation<double> secondaryAnimation,
-      ) => page,
-      transitionsBuilder: (
-        BuildContext context,
-        Animation<double> animation,
-        Animation<double> secondaryAnimation,
-        Widget child,
-      ) =>
-          FadeTransition(
-        opacity: animation,
-        child: child,
-      ),
-    ));
-  }
+  Navigator.of(context).pushReplacement(PageRouteBuilder(
+    pageBuilder: (
+      BuildContext context,
+      Animation<double> animation,
+      Animation<double> secondaryAnimation,
+    ) =>
+        page,
+    transitionsBuilder: (
+      BuildContext context,
+      Animation<double> animation,
+      Animation<double> secondaryAnimation,
+      Widget child,
+    ) =>
+        FadeTransition(
+      opacity: animation,
+      child: child,
+    ),
+  ));
+}
 
-  void nextScreenCloseOthersAnimation(context, page) {
-    Navigator.of(context).pushAndRemoveUntil(PageRouteBuilder(
-      pageBuilder: (
-        BuildContext context,
-        Animation<double> animation,
-        Animation<double> secondaryAnimation,
-      ) => page,
-      transitionsBuilder: (
-        BuildContext context,
-        Animation<double> animation,
-        Animation<double> secondaryAnimation,
-        Widget child,
-      ) =>
-          FadeTransition(
-        opacity: animation,
-        child: child,
+void nextScreenCloseOthersAnimation(context, page) {
+  Navigator.of(context).pushAndRemoveUntil(
+      PageRouteBuilder(
+        pageBuilder: (
+          BuildContext context,
+          Animation<double> animation,
+          Animation<double> secondaryAnimation,
+        ) =>
+            page,
+        transitionsBuilder: (
+          BuildContext context,
+          Animation<double> animation,
+          Animation<double> secondaryAnimation,
+          Widget child,
+        ) =>
+            FadeTransition(
+          opacity: animation,
+          child: child,
+        ),
       ),
-    ), ((route) => false));
-  }
+      ((route) => false));
+}
 
-void navigateToDetailsScreen(context, Article article, String? heroTag, ConfigModel configs) {
+void navigateToDetailsScreen(
+    context, Article article, String? heroTag, ConfigModel configs) {
   if (AppService.isVideoPost(article)) {
     nextScreeniOS(context, VideoArticleDeatils(article: article));
   } else {
@@ -96,7 +125,8 @@ void navigateToDetailsScreen(context, Article article, String? heroTag, ConfigMo
 }
 
 // Not used now. Replaced by normal
-void navigateToDetailsScreenByReplace(context, Article article, String? heroTag, ConfigModel configs) {
+void navigateToDetailsScreenByReplace(
+    context, Article article, String? heroTag, ConfigModel configs) {
   if (AppService.isVideoPost(article)) {
     nextScreenReplaceAnimation(context, VideoArticleDeatils(article: article));
   } else {
@@ -105,33 +135,45 @@ void navigateToDetailsScreenByReplace(context, Article article, String? heroTag,
   }
 }
 
-Widget getPostLayout (Article article , String? heroTag, ConfigModel configs){
-  if(configs.postDetailsLayout == Constants.postDetailsLayouts[0]){
+Widget getPostLayout(Article article, String? heroTag, ConfigModel configs) {
+  if (configs.postDetailsLayout == Constants.postDetailsLayouts[0]) {
     final List<Widget> layouts = [
-      ArticleDetailsLayout1(article: article, tag: heroTag,),
-      ArticleDetailsLayout2(article: article, tag: heroTag,),
-      ArticleDetailsLayout3(article: article, tag: heroTag,)
+      ArticleDetailsLayout1(
+        article: article,
+        tag: heroTag,
+      ),
+      ArticleDetailsLayout2(
+        article: article,
+        tag: heroTag,
+      ),
+      ArticleDetailsLayout3(
+        article: article,
+        tag: heroTag,
+      )
     ];
-    var layout = layouts..shuffle()..take(1);
+    var layout = layouts
+      ..shuffle()
+      ..take(1);
     return layout.first;
-    
-  } else if(configs.postDetailsLayout == Constants.postDetailsLayouts[1]){
-    return ArticleDetailsLayout1(article: article, tag: heroTag,);
-
-  } else if (configs.postDetailsLayout == Constants.postDetailsLayouts[2]){
+  } else if (configs.postDetailsLayout == Constants.postDetailsLayouts[1]) {
+    return ArticleDetailsLayout1(
+      article: article,
+      tag: heroTag,
+    );
+  } else if (configs.postDetailsLayout == Constants.postDetailsLayouts[2]) {
     return ArticleDetailsLayout2(article: article, tag: heroTag);
-
-  } else if (configs.postDetailsLayout == Constants.postDetailsLayouts[3]){
+  } else if (configs.postDetailsLayout == Constants.postDetailsLayouts[3]) {
     return ArticleDetailsLayout3(article: article, tag: heroTag);
-
-  } else{
+  } else {
     return ArticleDetailsLayout1(article: article, tag: heroTag);
   }
 }
 
-void navigateToNotificationDetailsScreen(context, NotificationModel notificationModel) {
+void navigateToNotificationDetailsScreen(
+    context, NotificationModel notificationModel) {
   if (notificationModel.postID == null) {
-    nextScreenPopupiOS(context, CustomNotificationDeatils(notificationModel: notificationModel));
+    nextScreenPopupiOS(context,
+        CustomNotificationDeatils(notificationModel: notificationModel));
   } else {
     nextScreen(
         context,

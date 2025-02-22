@@ -7,14 +7,15 @@ import 'package:wordpress_app/blocs/ads_bloc.dart';
 import 'package:wordpress_app/blocs/category_bloc.dart';
 import 'package:wordpress_app/blocs/config_bloc.dart';
 import 'package:wordpress_app/blocs/settings_bloc.dart';
+import 'package:wordpress_app/blocs/sidemenu_bloc.dart';
 import 'package:wordpress_app/blocs/user_bloc.dart';
 import 'package:wordpress_app/config/ad_config.dart';
 import 'package:wordpress_app/services/notification_service.dart';
 import 'package:wordpress_app/tabs/home_tab.dart';
 import 'package:wordpress_app/tabs/home_tab_without_tabs.dart';
 import 'package:wordpress_app/tabs/profile_tab.dart';
+import 'package:wordpress_app/tabs/programs_tab.dart';
 import 'package:wordpress_app/tabs/search_tab.dart';
-import 'package:wordpress_app/tabs/video_tab.dart';
 import '../blocs/featured_bloc.dart';
 import '../blocs/latest_articles_bloc.dart';
 import '../blocs/notification_bloc.dart';
@@ -56,13 +57,14 @@ class _HomePageState extends State<HomePage> {
   ];
 
   final List<Widget> _tabsWithVideo = [
-    const VideoTab(),
+    const ProgramsTab(),
     const SearchTab(),
     const BookmarkTab(),
     const SettingPage()
   ];
 
   void _initData() async {
+    final smb = context.read<SidemennuBloc>();
     final cb = context.read<CategoryBloc>();
     final nb = context.read<NotificationBloc>();
     final ab = context.read<AdsBloc>();
@@ -74,6 +76,7 @@ class _HomePageState extends State<HomePage> {
     Future.microtask(() {
       nb.checkPermission();
       cb.fetchData(configs.blockedCategories);
+      smb.fetchData();
     });
 
     await AppLinksService().initUniLinks(context);

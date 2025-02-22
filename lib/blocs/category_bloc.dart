@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:wordpress_app/services/wordpress_service.dart';
 import '../models/category.dart';
@@ -13,6 +12,4 @@ class CategoryBloc extends ChangeNotifier {
     _categoryData = await WordPressService().getCategories(blockedCategoryIds);
     notifyListeners();
   }
-
-  
 }

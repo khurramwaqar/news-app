@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:wordpress_app/blocs/config_bloc.dart';
 import 'package:wordpress_app/blocs/settings_bloc.dart';
+import 'package:wordpress_app/blocs/sidemenu_bloc.dart';
 import 'package:wordpress_app/config/wp_config.dart';
+import 'package:wordpress_app/models/sidemenu.dart';
 import 'package:wordpress_app/pages/category_based_articles.dart';
 import 'package:wordpress_app/services/app_service.dart';
 import 'package:wordpress_app/utils/next_screen.dart';
@@ -21,6 +23,7 @@ class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final categories = context.watch<CategoryBloc>().categoryData;
+    final sidemenu = context.watch<SidemennuBloc>().categoryData;
     final configs = context.read<ConfigBloc>().configs!;
 
     final titleTextStyle = Theme.of(context).textTheme.titleMedium;
@@ -42,11 +45,15 @@ class CustomDrawer extends StatelessWidget {
                 children: [
                   Container(
                     margin: const EdgeInsets.only(bottom: 8, top: 20),
-                    child: const AppLogo(height: 35),
+                    child: const AppLogo(height: 55),
+                  ),
+                  const Text(
+                    'ARY News',
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
                   ),
                   Text(
                     'app-version',
-                    style: Theme.of(context).textTheme.titleMedium,
+                    style: Theme.of(context).textTheme.titleSmall,
                   ).tr(args: [context.read<SettingsBloc>().appVersion])
                 ],
               ),
@@ -67,7 +74,8 @@ class CustomDrawer extends StatelessWidget {
                     title: Text('contact-us', style: titleTextStyle).tr(),
                     onTap: () {
                       Navigator.pop(context);
-                      AppService().openEmailSupport(context, configs.supportEmail);
+                      AppService()
+                          .openEmailSupport(context, configs.supportEmail);
                     },
                   ),
                   ListTile(
@@ -80,7 +88,8 @@ class CustomDrawer extends StatelessWidget {
                     title: Text('our-website', style: titleTextStyle).tr(),
                     onTap: () {
                       Navigator.pop(context);
-                      AppService().openLinkWithCustomTab(context, WpConfig.baseURL);
+                      AppService()
+                          .openLinkWithCustomTab(context, WpConfig.baseURL);
                     },
                   ),
                   Visibility(
@@ -172,13 +181,19 @@ class CustomDrawer extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 15, top: 15),
-              child: Text('categories', style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)).tr(),
+              child: Text('categories',
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium
+                          ?.copyWith(fontWeight: FontWeight.w600))
+                  .tr(),
             ),
 
             // Categories
-            _Categories(
-              categories: categories,
-            ),
+            // _Categories(
+            //   categories: categories,
+            // ),
+            _Sidemenu(categories: sidemenu),
           ],
         ),
       ),
@@ -202,7 +217,9 @@ class _Categories extends StatelessWidget {
       itemCount: categories.length,
       itemBuilder: (BuildContext context, int index) {
         final Category category = categories[index];
-        final List<Category> subCategories = categories.where((element) => element.parent == category.id).toList();
+        final List<Category> subCategories = categories
+            .where((element) => element.parent == category.id)
+            .toList();
         final bool hasSubCategories = subCategories.isEmpty ? false : true;
 
         //subcategories removed from the category list
@@ -215,19 +232,26 @@ class _Categories extends StatelessWidget {
             trailing: hasSubCategories ? null : const SizedBox.shrink(),
             leading: CircleAvatar(
               radius: 15,
-              backgroundImage: CachedNetworkImageProvider(category.categoryThumbnail!),
+              backgroundImage:
+                  CachedNetworkImageProvider(category.categoryThumbnail!),
             ),
             title: InkWell(
               child: Text(
                 category.name.toString().toUpperCase(),
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600, color: Theme.of(context).colorScheme.secondary),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: Theme.of(context).colorScheme.secondary),
               ),
               onTap: () {
                 Navigator.pop(context);
                 if (hasSubCategories) {
-                  nextScreeniOS(context, SubCategories(category: category, subCategories: subCategories));
+                  nextScreeniOS(
+                      context,
+                      SubCategories(
+                          category: category, subCategories: subCategories));
                 } else {
-                  nextScreeniOS(context, CategoryBasedArticles(category: category));
+                  nextScreeniOS(
+                      context, CategoryBasedArticles(category: category));
                 }
               },
             ),
@@ -245,7 +269,10 @@ class _Categories extends StatelessWidget {
                     return ListTile(
                       title: Text(
                         subCategory.name!,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(
                               fontWeight: FontWeight.w600,
                               color: Theme.of(context).colorScheme.secondary,
                             ),
@@ -253,12 +280,14 @@ class _Categories extends StatelessWidget {
                       horizontalTitleGap: 20,
                       leading: CircleAvatar(
                         radius: 12,
-                        backgroundImage: CachedNetworkImageProvider(subCategory.categoryThumbnail!),
+                        backgroundImage: CachedNetworkImageProvider(
+                            subCategory.categoryThumbnail!),
                       ),
                       trailing: const Icon(Icons.chevron_right),
                       onTap: () {
                         Navigator.pop(context);
-                        nextScreen(context, CategoryBasedArticles(category: subCategory));
+                        nextScreen(context,
+                            CategoryBasedArticles(category: subCategory));
                       },
                     );
                   }
@@ -267,6 +296,69 @@ class _Categories extends StatelessWidget {
                 },
               ),
             ]);
+      },
+    );
+  }
+}
+
+class _Sidemenu extends StatelessWidget {
+  const _Sidemenu({
+    required this.categories,
+  });
+
+  final Sidemenu categories;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      padding: const EdgeInsets.only(top: 10, bottom: 30),
+      itemCount: categories.sidebar?.length,
+      itemBuilder: (BuildContext context, int index) {
+        final category = categories.sidebar?[index];
+        //final List<Sidebar> subCategories = category.sidebar!.toList();
+        //final bool hasSubCategories = subCategories.isEmpty ? false : true;
+
+        //subcategories removed from the category list
+        // if (category.parent != 0) {
+        //   return const SizedBox.shrink();
+        // }
+
+        return ExpansionTile(
+          tilePadding: const EdgeInsets.only(left: 20, right: 15),
+          //trailing: hasSubCategories ? null : const SizedBox.shrink(),
+          trailing: null,
+          // leading: CircleAvatar(
+          //   radius: 15,
+          //   backgroundImage: CachedNetworkImageProvider(
+          //       "https://arynews.tv/wp-content/uploads/2021/07/ARY-News.png"),
+          // ),
+          title: InkWell(
+            child: Text(
+              category!.title.toString().toUpperCase(),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: Theme.of(context).colorScheme.secondary),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              nextScreeniOS(
+                context,
+                CategoryBasedArticles(
+                  isManual: true,
+                  sidebar: category,
+                  category: Category(
+                      categoryThumbnail: "",
+                      count: 4,
+                      parent: 4,
+                      name: "name",
+                      id: 72),
+                ),
+              );
+            },
+          ),
+        );
       },
     );
   }

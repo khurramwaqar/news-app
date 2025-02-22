@@ -56,7 +56,8 @@ class Featured extends StatelessWidget {
               spacing: const EdgeInsets.all(3),
               size: const Size.square(5),
               activeSize: const Size(20.0, 3.0),
-              activeShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+              activeShape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.0)),
             ),
           ),
         ),
@@ -74,7 +75,9 @@ class _NoContentsWidget extends StatelessWidget {
       height: 200,
       margin: const EdgeInsets.all(15),
       alignment: Alignment.center,
-      decoration: BoxDecoration(color: Theme.of(context).colorScheme.surface, borderRadius: BorderRadius.circular(5)),
+      decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          borderRadius: BorderRadius.circular(5)),
       child: const Text('no-contents').tr(),
     );
   }

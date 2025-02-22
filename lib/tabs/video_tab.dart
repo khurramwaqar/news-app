@@ -12,7 +12,6 @@ import 'package:wordpress_app/utils/loading_card.dart';
 import 'package:wordpress_app/widgets/inline_ads.dart';
 import 'package:wordpress_app/widgets/loading_indicator_widget.dart';
 
-
 class VideoTab extends StatefulWidget {
   const VideoTab({super.key});
 
@@ -20,7 +19,8 @@ class VideoTab extends StatefulWidget {
   State<VideoTab> createState() => _VideoTabState();
 }
 
-class _VideoTabState extends State<VideoTab> with AutomaticKeepAliveClientMixin {
+class _VideoTabState extends State<VideoTab>
+    with AutomaticKeepAliveClientMixin {
   final List<Article> _articles = [];
   ScrollController? _controller;
   int _page = 1;
@@ -31,7 +31,8 @@ class _VideoTabState extends State<VideoTab> with AutomaticKeepAliveClientMixin 
 
   @override
   void initState() {
-    _controller = ScrollController(initialScrollOffset: 0.0, keepScrollOffset: true);
+    _controller =
+        ScrollController(initialScrollOffset: 0.0, keepScrollOffset: true);
     _controller!.addListener(_scrollListener);
     _fetchArticles();
     _hasData = true;
@@ -55,7 +56,8 @@ class _VideoTabState extends State<VideoTab> with AutomaticKeepAliveClientMixin 
   }
 
   _scrollListener() async {
-    var isEnd = _controller!.offset >= _controller!.position.maxScrollExtent && !_controller!.position.outOfRange;
+    var isEnd = _controller!.offset >= _controller!.position.maxScrollExtent &&
+        !_controller!.position.outOfRange;
     if (isEnd && _articles.isNotEmpty) {
       setState(() {
         _page += 1;
@@ -108,7 +110,8 @@ class _VideoTabState extends State<VideoTab> with AutomaticKeepAliveClientMixin 
                   alignment: Alignment.center,
                   height: MediaQuery.of(context).size.height * 0.80,
                   width: double.infinity,
-                  child: EmptyPageWithImage(image: Config.noContentImage, title: 'no-contents'.tr()),
+                  child: EmptyPageWithImage(
+                      image: Config.noContentImage, title: 'no-contents'.tr()),
                 )
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -128,19 +131,25 @@ class _VideoTabState extends State<VideoTab> with AutomaticKeepAliveClientMixin 
                           if ((index + 1) % configs.postIntervalCount == 0) {
                             return Column(
                               children: [
-                                Card3(article: _articles[index], heroTag: 'video${_articles[index].id}'),
+                                Card3(
+                                    article: _articles[index],
+                                    heroTag: 'video${_articles[index].id}'),
                                 const InlineAds(),
                               ],
                             );
                           } else {
-                            return Card3(article: _articles[index], heroTag: 'video1${_articles[index].id}');
+                            return Card3(
+                                article: _articles[index],
+                                heroTag: 'video1${_articles[index].id}');
                           }
                         }
 
                         return null;
                       },
                     ),
-                    Opacity(opacity: _loading == true ? 1.0 : 0.0, child: const LoadingIndicatorWidget())
+                    Opacity(
+                        opacity: _loading == true ? 1.0 : 0.0,
+                        child: const LoadingIndicatorWidget())
                   ],
                 ),
         ),

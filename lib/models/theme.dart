@@ -5,6 +5,7 @@ import 'package:wordpress_app/config/config.dart';
 class ThemeModel {
   // LIGHT MODE
   final lightTheme = ThemeData(
+    tabBarTheme: TabBarTheme(labelColor: Colors.red.shade900),
     useMaterial3: true,
     visualDensity: VisualDensity.adaptivePlatformDensity,
     fontFamily: 'Manrope',
@@ -66,6 +67,7 @@ class ThemeModel {
 
   // DARK MODE
   final darkTheme = ThemeData(
+    tabBarTheme: TabBarTheme(labelColor: Colors.red.shade900),
     useMaterial3: true,
     visualDensity: VisualDensity.adaptivePlatformDensity,
     brightness: Brightness.dark,
@@ -96,21 +98,7 @@ class ThemeModel {
     primaryIconTheme: const IconThemeData(
       color: Colors.white,
     ),
-    appBarTheme: AppBarTheme(
-      color: Colors.grey[800],
-      surfaceTintColor: Colors.grey[800],
-      elevation: 0,
-      titleTextStyle: const TextStyle(
-        fontFamily: 'Manrope',
-        fontSize: 18,
-        fontWeight: FontWeight.w600,
-        color: Colors.white,
-      ),
-      iconTheme: const IconThemeData(color: Colors.white),
-      actionsIconTheme: const IconThemeData(color: Colors.white),
-      centerTitle: false,
-      systemOverlayStyle: SystemUiOverlayStyle.light,
-    ),
+
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: Colors.grey[800],
       selectedItemColor: Colors.white,

@@ -6,11 +6,13 @@ import 'app.dart';
 
 void main() async {
   await AppService.appStartupFunctions();
-  runApp(EasyLocalization(
-    supportedLocales: LanguageConfig.supportedLocales,
-    path: 'assets/translations',
-    fallbackLocale: LanguageConfig.fallbackLocale,
-    startLocale: LanguageConfig.startLocale,
-    child: const MyApp(),
-  ));
+  runApp(
+    EasyLocalization(
+      supportedLocales: LanguageConfig.supportedLocales,
+      path: 'assets/translations',
+      fallbackLocale: LanguageConfig.fallbackLocale,
+      startLocale: LanguageConfig.startLocale,
+      child: const MyApp(),
+    ),
+  );
 }
