@@ -5,6 +5,7 @@ import 'package:wordpress_app/blocs/user_bloc.dart';
 import 'package:wordpress_app/config/config.dart';
 import 'package:wordpress_app/pages/create_account.dart';
 import 'package:wordpress_app/pages/done.dart';
+import 'package:wordpress_app/pages/home.dart';
 import 'package:wordpress_app/pages/login.dart';
 import 'package:wordpress_app/utils/next_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -48,7 +49,8 @@ class _WelcomePageState extends State<WelcomePage> {
                 onPressed: () => _onSkipPressed(),
               ),
               Visibility(
-                visible: context.read<ConfigBloc>().configs!.multiLanguageEnabled,
+                visible:
+                    context.read<ConfigBloc>().configs!.multiLanguageEnabled,
                 child: IconButton(
                   alignment: Alignment.center,
                   padding: const EdgeInsets.only(right: 10),
@@ -89,23 +91,23 @@ class _WelcomePageState extends State<WelcomePage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                'welcome-to',
+                                'Welcome to ARY NEWS',
                                 style: Theme.of(context)
                                     .textTheme
                                     .headlineMedium
-                                    ?.copyWith(color: Theme.of(context).colorScheme.secondary),
+                                    ?.copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary),
                               ).tr(),
                               const SizedBox(
                                 width: 8,
-                              ),
-                              const AppLogo(
-                                height: 40,
-                                width: 160,
-                              ),
+                              )
                             ],
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 35, right: 35, top: 15),
+                            padding: const EdgeInsets.only(
+                                left: 35, right: 35, top: 15),
                             child: Text(
                               'welcome-intro',
                               textAlign: TextAlign.center,
@@ -113,7 +115,8 @@ class _WelcomePageState extends State<WelcomePage> {
                                   fontFamily: 'Open Sans',
                                   fontSize: 18,
                                   fontWeight: FontWeight.w400,
-                                  color: Theme.of(context).colorScheme.secondary),
+                                  color:
+                                      Theme.of(context).colorScheme.secondary),
                             ).tr(),
                           )
                         ],
@@ -130,18 +133,22 @@ class _WelcomePageState extends State<WelcomePage> {
                       height: 45,
                       child: TextButton(
                         style: TextButton.styleFrom(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30)),
                           backgroundColor: Theme.of(context).primaryColor,
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              "login-to-continue",
+                              "Explore",
                               style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(fontWeight: FontWeight.w600, color: Colors.white,),
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
                             ).tr(),
                             const SizedBox(
                               width: 15,
@@ -152,28 +159,10 @@ class _WelcomePageState extends State<WelcomePage> {
                             )
                           ],
                         ),
-                        onPressed: () => nextScreenPopupiOS(context, const LoginPage()),
+                        onPressed: () =>
+                            nextScreenPopupiOS(context, const HomePage()),
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "no-account",
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500, color: Theme.of(context).colorScheme.secondary),
-                        ).tr(),
-                        TextButton(
-                          child: Text(
-                            'create-account',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(fontWeight: FontWeight.w600, fontSize: 15),
-                          ).tr(),
-                          onPressed: () => nextScreenPopupiOS(context, const CreateAccountPage()),
-                        )
-                      ],
-                    )
                   ],
                 ),
               ),

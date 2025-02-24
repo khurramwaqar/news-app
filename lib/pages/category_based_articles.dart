@@ -189,7 +189,7 @@ class _CategoryBasedArticlesState extends State<CategoryBasedArticles> {
             tag: widget.heroTag ?? '',
             child: CustomCacheImageWithDarkFilterBottom(
                 imageUrl: widget.isManual == true
-                    ? "https://arynews.tv/wp-content/uploads/2025/02/placeholder_bg.jpg"
+                    ? "https://arynews.tv/wp-content/uploads/2025/02/placeholder_bg-1.jpg"
                     : widget.category.categoryThumbnail,
                 radius: 0.0),
           ),

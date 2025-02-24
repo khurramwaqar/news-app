@@ -21,7 +21,9 @@ class _SplashPageState extends State<SplashPage> {
     final UserBloc ub = context.read<UserBloc>();
     final configs = context.read<ConfigBloc>().configs!;
     Future.delayed(const Duration(milliseconds: 0)).then((value) {
-      if (ub.isSignedIn == true || ub.guestUser == true || !configs.welcomeScreenEnabled) {
+      if (ub.isSignedIn == true ||
+          ub.guestUser == true ||
+          !configs.welcomeScreenEnabled) {
         _gotoHomePage();
       } else {
         _gotoWelcomePage();
@@ -39,17 +41,17 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   void initState() {
-    
     // ignore: use_build_context_synchronously
-    Future.microtask(() => context.read<ConfigBloc>().getConfigsData().then((bool hasData) {
-          if (hasData) {
-            _afterSplash();
-          } else {
-            debugPrint('No configs data found');
-            if (!mounted) return;
-            nextScreenReplaceAnimation(context, const NoInternet());
-          }
-        }));
+    Future.microtask(
+        () => context.read<ConfigBloc>().getConfigsData().then((bool hasData) {
+              if (hasData) {
+                _afterSplash();
+              } else {
+                debugPrint('No configs data found');
+                if (!mounted) return;
+                nextScreenReplaceAnimation(context, const NoInternet());
+              }
+            }));
     super.initState();
   }
 

@@ -32,7 +32,7 @@ class SelectiveCategoryCard extends StatelessWidget {
               tag: heroTag,
               child: const CustomCacheImageWithDarkFilterBottom(
                 imageUrl:
-                    "https://arynews.tv/wp-content/uploads/2025/02/placeholder_bg.jpg",
+                    "https://arynews.tv/wp-content/uploads/2025/02/placeholder_bg-1.jpg",
                 radius: 5,
               ),
             ),

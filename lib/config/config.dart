@@ -20,18 +20,18 @@ class Config {
   static const String splash = 'assets/images/splash.png';
 
   // Image Assets
-  static const String commentImage = "assets/images/comment.svg";
+  static const String commentImage = "assets/images/comment.png";
   static const String bookmarkImage = "assets/images/bookmark.svg";
-  static const String notificationImage = "assets/images/notification.svg";
-  static const String noContentImage = "assets/images/no_content.svg";
-  static const String noInternetImage = "assets/images/no_internet.svg";
+  static const String notificationImage = "assets/images/notification_33.svg";
+  static const String noContentImage = "assets/images/no_content_33.svg";
+  static const String noInternetImage = "assets/images/no_internet_33.svg";
 
   // Animation files
   static const String doneAnimation = 'assets/animation_files/done.flr';
   static const String searchAnimation = 'assets/animation_files/search.flr';
 
   //Intro Images
-  static const String introImage1 = 'assets/images/intro_1.svg';
-  static const String introImage2 = 'assets/images/intro_2.svg';
-  static const String introImage3 = 'assets/images/intro_3.svg';
+  static const String introImage1 = 'assets/images/intro_1_33.svg';
+  static const String introImage2 = 'assets/images/intro_2_33.svg';
+  static const String introImage3 = 'assets/images/intro_3_33.svg';
 }
