@@ -31,40 +31,41 @@ class MyApp extends StatelessWidget {
       child: Consumer<ThemeBloc>(
         builder: (_, mode, child) {
           return MultiProvider(
-              providers: [
-                ChangeNotifierProvider<SettingsBloc>(
-                    create: (context) => SettingsBloc()),
-                ChangeNotifierProvider<CategoryBloc>(
-                    create: (context) => CategoryBloc()),
-                ChangeNotifierProvider<SidemennuBloc>(
-                    create: (context) => SidemennuBloc()),
-                ChangeNotifierProvider<FeaturedBloc>(
-                    create: (context) => FeaturedBloc()),
-                ChangeNotifierProvider<LatestArticlesBloc>(
-                    create: (context) => LatestArticlesBloc()),
-                ChangeNotifierProvider<UserBloc>(
-                    create: (context) => UserBloc()),
-                ChangeNotifierProvider<NotificationBloc>(
-                    create: (context) => NotificationBloc()),
-                ChangeNotifierProvider<PopularArticlesBloc>(
-                    create: (context) => PopularArticlesBloc()),
-                ChangeNotifierProvider<AdsBloc>(create: (context) => AdsBloc()),
-                ChangeNotifierProvider<CommentsBloc>(
-                    create: (context) => CommentsBloc()),
-                ChangeNotifierProvider<ConfigBloc>(
-                    create: (context) => ConfigBloc()),
-              ],
-              child: MaterialApp(
-                  debugShowCheckedModeBanner: false,
-                  supportedLocales: context.supportedLocales,
-                  localizationsDelegates: context.localizationDelegates,
-                  navigatorObservers: [firebaseObserver],
-                  locale: context.locale,
-                  theme: ThemeModel().lightTheme,
-                  darkTheme: ThemeModel().darkTheme,
-                  themeMode:
-                      mode.darkTheme == true ? ThemeMode.dark : ThemeMode.light,
-                  home: const SplashPage()));
+            providers: [
+              ChangeNotifierProvider<SettingsBloc>(
+                  create: (context) => SettingsBloc()),
+              ChangeNotifierProvider<CategoryBloc>(
+                  create: (context) => CategoryBloc()),
+              ChangeNotifierProvider<SidemennuBloc>(
+                  create: (context) => SidemennuBloc()),
+              ChangeNotifierProvider<FeaturedBloc>(
+                  create: (context) => FeaturedBloc()),
+              ChangeNotifierProvider<LatestArticlesBloc>(
+                  create: (context) => LatestArticlesBloc()),
+              ChangeNotifierProvider<UserBloc>(create: (context) => UserBloc()),
+              ChangeNotifierProvider<NotificationBloc>(
+                  create: (context) => NotificationBloc()),
+              ChangeNotifierProvider<PopularArticlesBloc>(
+                  create: (context) => PopularArticlesBloc()),
+              ChangeNotifierProvider<AdsBloc>(create: (context) => AdsBloc()),
+              ChangeNotifierProvider<CommentsBloc>(
+                  create: (context) => CommentsBloc()),
+              ChangeNotifierProvider<ConfigBloc>(
+                  create: (context) => ConfigBloc()),
+            ],
+            child: MaterialApp(
+              debugShowCheckedModeBanner: false,
+              supportedLocales: context.supportedLocales,
+              localizationsDelegates: context.localizationDelegates,
+              navigatorObservers: [firebaseObserver],
+              locale: context.locale,
+              theme: ThemeModel().lightTheme,
+              darkTheme: ThemeModel().darkTheme,
+              themeMode:
+                  mode.darkTheme == true ? ThemeMode.dark : ThemeMode.light,
+              home: const SplashPage(),
+            ),
+          );
         },
       ),
     );

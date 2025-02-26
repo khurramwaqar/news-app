@@ -4,15 +4,21 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 class AdConfig {
   // ----Android----
   static const String appIdAndroid = 'ca-app-pub-3940256099942544~3347511713';
-  static const String interstitialAdUnitIdAndroid = 'ca-app-pub-3940256099942544/1033173712';
-  static const String bannerAdUnitIdAndroid = 'ca-app-pub-3940256099942544/6300978111';
-  static const String nativeAdUnitIdAnndroid = 'ca-app-pub-3940256099942544/2247696110';
+  static const String interstitialAdUnitIdAndroid =
+      'ca-app-pub-3940256099942544/1033173712';
+  static const String bannerAdUnitIdAndroid =
+      'ca-app-pub-3940256099942544/9214589741';
+  static const String nativeAdUnitIdAnndroid =
+      'ca-app-pub-3940256099942544/9214589741';
 
   // ----iOS------
   static const String appIdiOS = 'ca-app-pub-3940256099942544~1458002511';
-  static const String interstitialAdUnitIdiOS = 'ca-app-pub-3940256099942544/4411468910';
-  static const String bannerAdUnitIdiOS = 'ca-app-pub-3940256099942544/2934735716';
-  static const String nativeAdUnitIdiOS = 'ca-app-pub-3940256099942544/3986624511';
+  static const String interstitialAdUnitIdiOS =
+      'ca-app-pub-3940256099942544/4411468910';
+  static const String bannerAdUnitIdiOS =
+      'ca-app-pub-3940256099942544/9214589741';
+  static const String nativeAdUnitIdiOS =
+      'ca-app-pub-3940256099942544/9214589741';
 
   // -- Don't edit these --
 
@@ -43,7 +49,6 @@ class AdConfig {
       return interstitialAdUnitIdiOS;
     }
   }
-
 
   static String getNativeAdUnitId() {
     if (Platform.isAndroid) {

@@ -325,38 +325,29 @@ class _Sidemenu extends StatelessWidget {
         //   return const SizedBox.shrink();
         // }
 
-        return ExpansionTile(
-          tilePadding: const EdgeInsets.only(left: 20, right: 15),
-          //trailing: hasSubCategories ? null : const SizedBox.shrink(),
-          trailing: null,
-          // leading: CircleAvatar(
-          //   radius: 15,
-          //   backgroundImage: CachedNetworkImageProvider(
-          //       "https://arynews.tv/wp-content/uploads/2021/07/ARY-News.png"),
-          // ),
-          title: InkWell(
-            child: Text(
-              category!.title.toString().toUpperCase(),
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: Theme.of(context).colorScheme.secondary),
-            ),
-            onTap: () {
-              Navigator.pop(context);
-              nextScreeniOS(
-                context,
-                CategoryBasedArticles(
-                  isManual: true,
-                  sidebar: category,
-                  category: Category(
-                      categoryThumbnail: "",
-                      count: 4,
-                      parent: 4,
-                      name: "name",
-                      id: 72),
-                ),
-              );
-            },
+        return ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+            nextScreeniOS(
+              context,
+              CategoryBasedArticles(
+                isManual: true,
+                sidebar: category,
+                category: Category(
+                    categoryThumbnail: "",
+                    count: 4,
+                    parent: 4,
+                    name: "name",
+                    id: 72),
+              ),
+            );
+          },
+          child: Text(
+            category!.title.toString().toUpperCase(),
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+                color: Theme.of(context).colorScheme.secondary),
+            textAlign: TextAlign.left,
           ),
         );
       },

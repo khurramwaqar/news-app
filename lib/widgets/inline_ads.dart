@@ -20,7 +20,8 @@ class InlineAds extends StatelessWidget {
       children: [
         //native ads
         Visibility(
-            visible: AppService.nativeAdVisible(Constants.adPlacements[1], configs),
+            visible:
+                AppService.nativeAdVisible(Constants.adPlacements[1], configs),
             child: Padding(
               padding: const EdgeInsets.only(top: 15),
               child: NativeAdWidget(
@@ -31,15 +32,19 @@ class InlineAds extends StatelessWidget {
 
         //custom ads
         Visibility(
-          visible: AppService.customAdVisible(Constants.adPlacements[1], configs),
+          visible:
+              AppService.customAdVisible(Constants.adPlacements[1], configs),
           child: Container(
-              height: CustomAdConfig.defaultBannerHeight,
-              padding: isSliver != null && isSliver == true ? const EdgeInsets.only(bottom: 15) : const EdgeInsets.only(top: 15) ,
-              child: CustomAdWidget(
-                assetUrl: configs.customAdAssetUrl,
-                targetUrl: configs.customAdDestinationUrl,
-                radius: 5,
-              )),
+            height: CustomAdConfig.defaultBannerHeight,
+            padding: isSliver != null && isSliver == true
+                ? const EdgeInsets.only(bottom: 15)
+                : const EdgeInsets.only(top: 15),
+            child: CustomAdWidget(
+              assetUrl: configs.customAdAssetUrl,
+              targetUrl: configs.customAdDestinationUrl,
+              radius: 5,
+            ),
+          ),
         )
       ],
     );

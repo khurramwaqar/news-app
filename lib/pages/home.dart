@@ -1,8 +1,14 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:miniplayer/miniplayer.dart';
 import 'package:wordpress_app/blocs/ads_bloc.dart';
 import 'package:wordpress_app/blocs/category_bloc.dart';
 import 'package:wordpress_app/blocs/config_bloc.dart';
@@ -23,6 +29,7 @@ import '../blocs/popular_articles_bloc.dart';
 import '../services/app_links_service.dart';
 import '../tabs/bookmark_tab.dart';
 import 'package:provider/provider.dart';
+import 'package:rxdart/rxdart.dart'; // For combining streams
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -34,6 +41,30 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   PageController? _pageController;
+
+  // Miniplayer controller for programmatic expand/collapse if desired
+  final MiniplayerController _miniPlayerController = MiniplayerController();
+
+  // Just_audio player instance
+  late AudioPlayer _audioPlayer;
+
+  Stream<PositionData> get _positionDataStream =>
+      Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
+        _audioPlayer.positionStream,
+        _audioPlayer.bufferedPositionStream,
+        _audioPlayer.durationStream,
+        (Duration position, Duration bufferedPosition, Duration? duration) {
+          return PositionData(
+            position,
+            bufferedPosition,
+            duration ?? Duration.zero,
+          );
+        },
+      );
+
+  // Example live stream URL (replace with your own)
+  final String _streamUrl =
+      'https://arynewsm.aryzap.com/v1/0183ea205add0b8ed5941a38bc6f/018ad63928611ea50695040da296/main.m3u8';
 
   final List<IconData> _iconList = [
     Feather.home,
@@ -114,11 +145,28 @@ class _HomePageState extends State<HomePage> {
     _pageController = PageController();
     _initData();
     _fetchPostsData();
+    _audioPlayer = AudioPlayer();
+    // Prepare audio stream right away (or trigger it on a button press)
+    _initAudio();
+  }
+
+  // Example method to initialize live audio playback
+  Future<void> _initAudio() async {
+    try {
+      // Load the streaming URL; you can handle playback after user input if desired
+      await _audioPlayer.setUrl(_streamUrl);
+      // Autoplay (optional)
+      // _audioPlayer.play();
+    } catch (e) {
+      debugPrint('Error loading audio stream: $e');
+    }
   }
 
   @override
   void dispose() {
     _pageController!.dispose();
+    _audioPlayer.dispose(); // very important to release resources
+
     super.dispose();
   }
 
@@ -141,27 +189,192 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  void _togglePlayPause() {
+    if (_audioPlayer.playing) {
+      _audioPlayer.pause();
+    } else {
+      _audioPlayer.play();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final cb = context.read<ConfigBloc>();
     return PopScope(
       child: Scaffold(
         bottomNavigationBar: _bottonNavigationBar(context, cb),
-        body: PageView(
-          physics: const NeverScrollableScrollPhysics(),
-          allowImplicitScrolling: false,
-          controller: _pageController,
-          children: <Widget>[
-            cb.configs!.homeCategories.isEmpty
-                ? HomeTabWithoutTabs(
-                    configs: cb.configs!,
-                  )
-                : HomeTab(
-                    configs: cb.configs!,
-                    homeCategories: cb.homeCategories,
-                    categoryTabs: _categoryTabs(cb),
-                  ),
-            ..._childrens(cb)
+        body: Stack(
+          children: [
+            PageView(
+              physics: const NeverScrollableScrollPhysics(),
+              allowImplicitScrolling: false,
+              controller: _pageController,
+              children: <Widget>[
+                cb.configs!.homeCategories.isEmpty
+                    ? HomeTabWithoutTabs(
+                        configs: cb.configs!,
+                      )
+                    : HomeTab(
+                        configs: cb.configs!,
+                        homeCategories: cb.homeCategories,
+                        categoryTabs: _categoryTabs(cb),
+                      ),
+                ..._childrens(cb),
+                // Miniplayer pinned to bottom; we give it a small margin so it's clearly above the bottom nav
+              ],
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 0, // bottom nav’s height; adjust to your UI
+                ),
+                child: StreamBuilder<PlayerState>(
+                  stream: _audioPlayer.playerStateStream,
+                  builder: (context, snapshot) {
+                    final playerState = snapshot.data;
+                    final isPlaying = playerState?.playing ?? false;
+                    return Miniplayer(
+                      controller: _miniPlayerController,
+                      minHeight: 95,
+                      maxHeight: 95,
+                      builder: (height, percentage) {
+                        return Container(
+                          color: Theme.of(context).cardColor,
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  const SizedBox(
+                                    width: 10.0,
+                                  ),
+                                  // IconButton(
+                                  //   onPressed: () {},
+                                  //   icon: Icon(
+                                  //     FontAwesome.podcast,
+                                  //     size: 32,
+                                  //     color: isPlaying
+                                  //         ? Colors.red.shade900
+                                  //         : Colors.grey.shade600,
+                                  //   ),
+                                  // ),
+                                  const SizedBox(
+                                    width: 10.0,
+                                  ),
+                                  Expanded(
+                                    child: ListTile(
+                                      trailing: IconButton(
+                                          icon: isPlaying
+                                              ? Icon(
+                                                  FontAwesome.pause,
+                                                  size: 24,
+                                                  color: Colors.red.shade900,
+                                                )
+                                              : Icon(
+                                                  FontAwesome.play,
+                                                  size: 24,
+                                                  color: Colors.grey.shade400,
+                                                ),
+                                          onPressed: () {
+                                            _togglePlayPause();
+                                          }),
+                                      leading: IconButton(
+                                        icon: Icon(
+                                          FontAwesome.podcast,
+                                          size: 32,
+                                          color: isPlaying
+                                              ? Colors.red.shade900
+                                              : Colors.grey.shade600,
+                                        ),
+                                        onPressed: () {
+                                          _togglePlayPause();
+                                        },
+                                      ),
+                                      title: Text(
+                                        'ARY News',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      subtitle: Text(
+                                        'Audio Live Stream',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              StreamBuilder<PositionData>(
+                                stream: _positionDataStream,
+                                builder: (context, snapshot) {
+                                  final positionData = snapshot.data;
+                                  final duration =
+                                      positionData?.duration ?? Duration.zero;
+                                  final position =
+                                      positionData?.position ?? Duration.zero;
+                                  final buffered =
+                                      positionData?.bufferedPosition ??
+                                          Duration.zero;
+                                  return Column(
+                                    children: [
+                                      LinearProgressIndicator(
+                                        value: (buffered.inMilliseconds /
+                                                (duration.inMilliseconds == 0
+                                                    ? 1
+                                                    : duration.inMilliseconds))
+                                            .clamp(0, 1),
+                                        backgroundColor: Colors.grey.shade300,
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                          Theme.of(context).primaryColor,
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
+                              StreamBuilder<PositionData>(
+                                stream: _positionDataStream,
+                                builder: (context, snapshot) {
+                                  final positionData = snapshot.data;
+                                  final duration =
+                                      positionData?.duration ?? Duration.zero;
+                                  final position =
+                                      positionData?.position ?? Duration.zero;
+                                  final buffered =
+                                      positionData?.bufferedPosition ??
+                                          Duration.zero;
+
+                                  // If this is purely live (no seeking available),
+                                  // you might want to hide this Slider or just show a loading bar.
+                                  return Column(
+                                    children: [
+                                      LinearProgressIndicator(
+                                        minHeight: 1.5,
+                                        value: (buffered.inMilliseconds /
+                                                (duration.inMilliseconds == 0
+                                                    ? 1
+                                                    : duration.inMilliseconds))
+                                            .clamp(0, 1),
+                                        backgroundColor: Colors.grey.shade300,
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                          Theme.of(context).primaryColor,
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -197,4 +410,12 @@ class _HomePageState extends State<HomePage> {
       onTap: (index) => onItemTapped(index),
     );
   }
+}
+
+class PositionData {
+  final Duration position;
+  final Duration bufferedPosition;
+  final Duration duration;
+
+  const PositionData(this.position, this.bufferedPosition, this.duration);
 }
