@@ -2,10 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:wordpress_app/config/wp_config.dart';
+import 'package:wordpress_app/models/ads_model.dart';
 import 'package:wordpress_app/models/app_config_model.dart';
 import 'package:wordpress_app/models/article.dart';
 import 'package:wordpress_app/models/comment.dart';
 import 'package:http/http.dart' as http;
+import 'package:wordpress_app/models/news_programs.dart';
 import 'package:wordpress_app/models/sidemenu.dart';
 import 'package:wordpress_app/services/app_service.dart';
 import 'package:wordpress_app/utils/toast.dart';
@@ -421,6 +423,22 @@ class WordPressService {
       // If the server did return a 200 OK response,
       // then parse the JSON.
       return Sidemenu.fromJson(jsonDecode(response.body));
+      //return Sidemenu.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
+  }
+
+  Future<AdsManagerModel> getAdsManager() async {
+    final response = await http.get(
+      Uri.parse('https://api.arynews.tv/v3/adsManagerIOS.json?id=refresh'),
+    );
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      return AdsManagerModel.fromJson(jsonDecode(response.body));
       //return Sidemenu.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
     } else {
       // If the server did not return a 200 OK response,

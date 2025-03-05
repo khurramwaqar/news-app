@@ -7,8 +7,10 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:miniplayer/miniplayer.dart';
+import 'package:wordpress_app/blocs/ads_banner.dart';
 import 'package:wordpress_app/blocs/ads_bloc.dart';
 import 'package:wordpress_app/blocs/category_bloc.dart';
 import 'package:wordpress_app/blocs/config_bloc.dart';
@@ -22,6 +24,7 @@ import 'package:wordpress_app/tabs/home_tab_without_tabs.dart';
 import 'package:wordpress_app/tabs/profile_tab.dart';
 import 'package:wordpress_app/tabs/programs_tab.dart';
 import 'package:wordpress_app/tabs/search_tab.dart';
+import 'package:wordpress_app/widgets/banner_ad_customize.dart';
 import '../blocs/featured_bloc.dart';
 import '../blocs/latest_articles_bloc.dart';
 import '../blocs/notification_bloc.dart';
@@ -96,6 +99,7 @@ class _HomePageState extends State<HomePage> {
 
   void _initData() async {
     final smb = context.read<SidemennuBloc>();
+    final adm = context.read<AdsManagerBloc>();
     final cb = context.read<CategoryBloc>();
     final nb = context.read<NotificationBloc>();
     final ab = context.read<AdsBloc>();
@@ -108,6 +112,7 @@ class _HomePageState extends State<HomePage> {
       nb.checkPermission();
       cb.fetchData(configs.blockedCategories);
       smb.fetchData();
+      adm.fetchData();
     });
 
     await AppLinksService().initUniLinks(context);

@@ -1,12 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:hive/hive.dart';
+import 'package:wordpress_app/blocs/ads_banner.dart';
 import 'package:wordpress_app/blocs/config_bloc.dart';
 import 'package:wordpress_app/blocs/settings_bloc.dart';
 import 'package:wordpress_app/blocs/sidemenu_bloc.dart';
 import 'package:wordpress_app/config/wp_config.dart';
 import 'package:wordpress_app/models/sidemenu.dart';
 import 'package:wordpress_app/pages/category_based_articles.dart';
+import 'package:wordpress_app/pages/live_stream.dart';
 import 'package:wordpress_app/services/app_service.dart';
 import 'package:wordpress_app/utils/next_screen.dart';
 import 'package:wordpress_app/widgets/app_logo.dart';
@@ -310,6 +313,8 @@ class _Sidemenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final adm = context.read<AdsManagerBloc>().adManagerData;
+
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -325,29 +330,44 @@ class _Sidemenu extends StatelessWidget {
         //   return const SizedBox.shrink();
         // }
 
-        return ElevatedButton(
-          onPressed: () {
-            Navigator.pop(context);
-            nextScreeniOS(
-              context,
-              CategoryBasedArticles(
-                isManual: true,
-                sidebar: category,
-                category: Category(
-                    categoryThumbnail: "",
-                    count: 4,
-                    parent: 4,
-                    name: "name",
-                    id: 72),
-              ),
-            );
+        return GestureDetector(
+          onTap: () {
+            if (category.title!.contains("LIVE")) {
+              Navigator.pop(context);
+              nextScreeniOS(context, LiveStream(iosLiveStreamAdUrl: adm.iosMeta!.iosLiveStreamAdUrl!, iosLiveStreamStream: adm.iosMeta!.iosLiveStreamStream));
+            } else {
+              Navigator.pop(context);
+              nextScreeniOS(
+                context,
+                CategoryBasedArticles(
+                  isManual: true,
+                  sidebar: category,
+                  category: Category(
+                      categoryThumbnail: "",
+                      count: 4,
+                      parent: 4,
+                      name: "name",
+                      id: 72),
+                ),
+              );
+            }
           },
-          child: Text(
-            category!.title.toString().toUpperCase(),
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-                color: Theme.of(context).colorScheme.secondary),
-            textAlign: TextAlign.left,
+          child: Container(
+            padding: const EdgeInsets.all(5.0),
+            margin: const EdgeInsets.only(left: 10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  category!.title.toString().toUpperCase(),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 16.0,
+                      color: Theme.of(context).colorScheme.secondary),
+                  textAlign: TextAlign.left,
+                ),
+              ],
+            ),
           ),
         );
       },

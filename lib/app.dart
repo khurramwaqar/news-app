@@ -13,6 +13,7 @@ import 'blocs/popular_articles_bloc.dart';
 import 'blocs/settings_bloc.dart';
 import 'blocs/theme_bloc.dart';
 import 'blocs/user_bloc.dart';
+import 'blocs/ads_banner.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'models/theme.dart';
 import 'pages/splash.dart';
@@ -38,6 +39,8 @@ class MyApp extends StatelessWidget {
                   create: (context) => CategoryBloc()),
               ChangeNotifierProvider<SidemennuBloc>(
                   create: (context) => SidemennuBloc()),
+              ChangeNotifierProvider<AdsManagerBloc>(
+                  create: (context) => AdsManagerBloc()),
               ChangeNotifierProvider<FeaturedBloc>(
                   create: (context) => FeaturedBloc()),
               ChangeNotifierProvider<LatestArticlesBloc>(

@@ -5,7 +5,7 @@ class Config {
   static const appName = 'ARY News';
 
   // Onesignal App ID
-  static const String onesignalAppID = 'YOUR_ONES0GNAL_ID';
+  static const String onesignalAppID = 'fe25c3c3-99c3-40d5-8871-3289b3291f62';
 
   //iOS App ID (Ignore this for Android)
   static const iOSAppID = '000000';

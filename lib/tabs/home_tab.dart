@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:interactive_media_ads/interactive_media_ads.dart';
 import 'package:pod_player/pod_player.dart';
+import 'package:provider/provider.dart';
+import 'package:wordpress_app/blocs/ads_banner.dart';
+import 'package:wordpress_app/config/ad_config.dart';
 import 'package:wordpress_app/models/app_config_model.dart';
 import 'package:wordpress_app/models/category.dart';
 import 'package:wordpress_app/pages/live_stream.dart';
@@ -12,6 +16,8 @@ import 'package:wordpress_app/pages/webview_page.dart';
 import 'package:wordpress_app/utils/next_screen.dart';
 import 'package:wordpress_app/utils/service_tool_widget.dart';
 import 'package:wordpress_app/widgets/app_logo.dart';
+import 'package:wordpress_app/widgets/banner_ad.dart';
+import 'package:wordpress_app/widgets/banner_ad_customize.dart';
 import 'package:wordpress_app/widgets/drawer.dart';
 import 'package:wordpress_app/widgets/tab_medium.dart';
 import '../pages/search.dart';
@@ -143,6 +149,7 @@ class _HomeTabState extends State<HomeTab>
 
   @override
   Widget build(BuildContext context) {
+    final adm = context.watch<AdsManagerBloc>().adManagerData!;
     super.build(context);
     return Scaffold(
       drawer: Visibility(
@@ -200,7 +207,7 @@ class _HomeTabState extends State<HomeTab>
                     size: 20,
                   ),
                   onPressed: () =>
-                      nextScreenPopupiOS(context, const LiveStream()),
+                      nextScreenPopupiOS(context, LiveStream(iosLiveStreamStream: adm.iosMeta!.iosLiveStreamStream, iosLiveStreamAdUrl: adm.iosMeta!.iosLiveStreamAdUrl!)),
                 ),
               ],
               pinned: true,
@@ -329,6 +336,7 @@ class _HomeTabState extends State<HomeTab>
                 },
               ),
             ),
+
             Expanded(
               child: Builder(
                 builder: (BuildContext context) {

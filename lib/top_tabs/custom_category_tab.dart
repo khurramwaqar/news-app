@@ -19,7 +19,8 @@ class CustomCategoryTab extends StatefulWidget {
   final Category category;
   final ScrollController sc;
 
-  const CustomCategoryTab({super.key, required this.category, required this.sc});
+  const CustomCategoryTab(
+      {super.key, required this.category, required this.sc});
 
   @override
   State<CustomCategoryTab> createState() => _CustomCategoryTabState();
@@ -33,7 +34,9 @@ class _CustomCategoryTabState extends State<CustomCategoryTab> {
   final int _postAmountPerLoad = 5;
 
   Future _fetchData() async {
-    await WordPressService().fetchPostsByCategoryId(widget.category.id, _page, _postAmountPerLoad).then((value) {
+    await WordPressService()
+        .fetchPostsByCategoryId(widget.category.id, _page, _postAmountPerLoad)
+        .then((value) {
       _articles.addAll(value);
       _isLoading = false;
       if (_articles.isEmpty) {
@@ -94,7 +97,8 @@ class _CustomCategoryTabState extends State<CustomCategoryTab> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.10,
                 ),
-                EmptyPageWithImage(image: Config.noContentImage, title: 'no-contents'.tr())
+                EmptyPageWithImage(
+                    image: Config.noContentImage, title: 'no-contents'.tr())
               ],
             )
           : ListView.separated(
@@ -102,7 +106,8 @@ class _CustomCategoryTabState extends State<CustomCategoryTab> {
               padding: const EdgeInsets.all(15),
               physics: const NeverScrollableScrollPhysics(),
               itemCount: _articles.isNotEmpty ? _articles.length + 1 : 5,
-              separatorBuilder: (BuildContext context, int index) => const SizedBox(
+              separatorBuilder: (BuildContext context, int index) =>
+                  const SizedBox(
                 height: 15,
               ),
               shrinkWrap: true,
@@ -127,7 +132,9 @@ class _CustomCategoryTabState extends State<CustomCategoryTab> {
                     );
                   }
                 }
-                return Opacity(opacity: _isLoading == true ? 1.0 : 0.0, child: const LoadingIndicatorWidget());
+                return Opacity(
+                    opacity: _isLoading == true ? 1.0 : 0.0,
+                    child: const LoadingIndicatorWidget());
               },
             ),
     );

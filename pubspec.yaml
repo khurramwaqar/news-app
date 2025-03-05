@@ -72,6 +72,7 @@ dependencies:
   youtube_player_iframe: ^5.1.2
   just_audio: ^0.9.42
   audio_session: ^0.1.21
+  flutter_vlc_player: ^7.4.2
 
   
 

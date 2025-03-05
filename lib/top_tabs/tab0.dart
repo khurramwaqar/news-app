@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:wordpress_app/blocs/ads_banner.dart';
 import 'package:wordpress_app/blocs/tab_scroll_controller.dart';
+import 'package:wordpress_app/config/ad_config.dart';
 import 'package:wordpress_app/config/custom_ad_config.dart';
 import 'package:wordpress_app/constants/constant.dart';
 import 'package:wordpress_app/models/app_config_model.dart';
 import 'package:wordpress_app/services/app_service.dart';
+import 'package:wordpress_app/widgets/banner_ad_customize.dart';
 import 'package:wordpress_app/widgets/custom_ad.dart';
 import 'package:wordpress_app/widgets/featured.dart';
 import 'package:wordpress_app/widgets/popular_articles.dart';
@@ -25,17 +29,17 @@ class Tab0 extends StatefulWidget {
 }
 
 class _Tab0State extends State<Tab0> {
-
-  
   Future _onRefresh(ConfigModel configs) async {
-    if(configs.featuredPostEnabled){
+    if (configs.featuredPostEnabled) {
       context.read<FeaturedBloc>().updatePageIndex(0);
       context.read<FeaturedBloc>().fetchData();
     }
-    if(configs.popularPostEnabled){
+    if (configs.popularPostEnabled) {
       context.read<PopularArticlesBloc>().fetchData();
     }
     context.read<LatestArticlesBloc>().onReload(configs.blockedCategories);
+
+    context.read<AdsManagerBloc>().fetchData();
   }
 
   @override
@@ -52,7 +56,9 @@ class _Tab0State extends State<Tab0> {
       if (isEnd && lb.articles.isNotEmpty) {
         lb.pageIncreament();
         lb.setLoading(true);
-        lb.fetchData(context.read<ConfigBloc>().configs!.blockedCategories).then((value) {
+        lb
+            .fetchData(context.read<ConfigBloc>().configs!.blockedCategories)
+            .then((value) {
           lb.setLoading(false);
         });
       }
@@ -62,6 +68,8 @@ class _Tab0State extends State<Tab0> {
   @override
   Widget build(BuildContext context) {
     final configs = context.read<ConfigBloc>().configs!;
+    final getAdsInfo = context.watch<AdsManagerBloc>().adManagerData;
+
     return RefreshIndicator(
       backgroundColor: Theme.of(context).primaryColor,
       color: Colors.white,
@@ -72,28 +80,42 @@ class _Tab0State extends State<Tab0> {
         physics: const AlwaysScrollableScrollPhysics(),
         child: Column(
           children: [
-
             //Featured Posts
-            Visibility(visible: configs.featuredPostEnabled, child: const Featured()),
+            Visibility(
+                visible: configs.featuredPostEnabled, child: const Featured()),
 
             //Popular Posts
-            Visibility(visible: configs.popularPostEnabled, child: const PopularArticles()),
+            Visibility(
+                visible: configs.popularPostEnabled,
+                child: const PopularArticles()),
 
             //Native ads
             Visibility(
-              visible: AppService.nativeAdVisible(Constants.adPlacements[0], configs),
-              child: NativeAdWidget(isDarkMode: context.read<ThemeBloc>().darkTheme ?? false, isSmallSize: false),
+              visible: AppService.nativeAdVisible(
+                  Constants.adPlacements[0], configs),
+              child: NativeAdWidget(
+                  isDarkMode: context.read<ThemeBloc>().darkTheme ?? false,
+                  isSmallSize: false),
             ),
 
             //custom Ads
             Visibility(
-              visible: AppService.customAdVisible(Constants.adPlacements[0], configs),
-              child: Container(
-                padding: const EdgeInsets.only(top: 20, bottom: 20),
-                height: CustomAdConfig.defaultPosterHeight,
-                child: CustomAdWidget(assetUrl: configs.customAdAssetUrl, targetUrl: configs.customAdDestinationUrl))),
-            
+                visible: AppService.customAdVisible(
+                    Constants.adPlacements[0], configs),
+                child: Container(
+                    padding: const EdgeInsets.only(top: 20, bottom: 20),
+                    height: CustomAdConfig.defaultPosterHeight,
+                    child: CustomAdWidget(
+                        assetUrl: configs.customAdAssetUrl,
+                        targetUrl: configs.customAdDestinationUrl))),
+
             //Latest Posts
+            getAdsInfo.iosMeta?.ioshomeFirstStatus == true
+                ? BannerAdCustomizeWidget(
+                    adSize: getAdsInfo.iosMeta!.ioshomeFirstAdsize.toString(),
+                    adUnit: getAdsInfo.iosMeta!.ioshomeFirstAdUnit.toString(),
+                  )
+                : const Text("Loading..."),
             const LattestArticles(),
           ],
         ),

@@ -18,16 +18,19 @@ class HomeTabWithoutTabs extends StatefulWidget {
   State<HomeTabWithoutTabs> createState() => _HomeTabWithoutTabsState();
 }
 
-class _HomeTabWithoutTabsState extends State<HomeTabWithoutTabs> with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
+class _HomeTabWithoutTabsState extends State<HomeTabWithoutTabs>
+    with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      drawer: Visibility(visible: widget.configs.menubarEnabled, child: const CustomDrawer()),
+      drawer: Visibility(
+          visible: widget.configs.menubarEnabled, child: const CustomDrawer()),
       key: scaffoldKey,
-      body: NestedScrollView(headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+      body: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
         return <Widget>[
           SliverAppBar(
             automaticallyImplyLeading: false,
@@ -67,9 +70,9 @@ class _HomeTabWithoutTabsState extends State<HomeTabWithoutTabs> with AutomaticK
                   AntDesign.bells,
                   size: 20,
                 ),
-                onPressed: () => nextScreenPopupiOS(context, const Notifications()),
+                onPressed: () =>
+                    nextScreenPopupiOS(context, const Notifications()),
               ),
-              
             ],
             pinned: true,
             floating: true,
@@ -78,7 +81,8 @@ class _HomeTabWithoutTabsState extends State<HomeTabWithoutTabs> with AutomaticK
         ];
       }, body: Builder(
         builder: (BuildContext context) {
-          final ScrollController innerScrollController = PrimaryScrollController.of(context);
+          final ScrollController innerScrollController =
+              PrimaryScrollController.of(context);
           return Tab0(sc: innerScrollController);
         },
       )),
